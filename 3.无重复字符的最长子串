@@ -1,0 +1,31 @@
+/*
+给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+*/
+
+/*
+遍历字符，若不重复就附加到空串后面，若遇到重复，则从之前字符的后一位开始算起
+*/
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        string str = "";
+        int cnt = 0, max = 0;
+        for(int i = 0; i < s.size(); i++){
+            int flag = str.find(s[i]);      //若在str中存在，则返回下标
+            if(flag == -1){
+                ++cnt;
+                str += s[i];
+            }
+            else{
+                string str2(str, flag + 1);  //从下标后开始拷贝
+                str = str2 + s[i];  
+                cnt = str.size();
+            }
+            if(cnt > max){
+                max = cnt;
+            }
+        }
+        return max;
+    }
+};
