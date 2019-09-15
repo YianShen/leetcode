@@ -1,0 +1,93 @@
+/*
+给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
+*/
+
+/*
+从头遍历，找到该位置开始是否有回文子串
+缺点：耗时太长；
+优点：内存占用小
+*/
+class Solution {
+public:
+    string longestPalindrome(string s) {   
+        int cnt = 0, max = 0;
+        string str = "";
+        for(int i = 0; i < s.length(); i++){
+            int beg = i, endflag = s.length() - 1, end = endflag;
+            while(beg < end){
+                if(s[beg] == s[end]){
+                    beg++;
+                    end--;
+                }
+                else if(s[beg] != s[end] && beg != i){
+                    beg = i;
+                    endflag--;
+                    end = endflag;
+                }
+                else{
+                    end--;
+                }
+            }
+            if(beg == end){
+                cnt = 2 * (beg - i + 1) - 1;
+            }
+            else{
+                cnt = 2 * (beg - i);
+            }
+            if(cnt > max){
+                max = cnt;
+                if(beg == end){
+                    str = s.substr(i, (2 * (beg - i + 1) - 1));
+                }
+                else{
+                    str = s.substr(i, (2 * (beg - i)));                    
+                }
+            }
+        }
+        if(max < 2){
+                str = s[0];
+            }
+        return str;
+    }
+};
+/*
+改进：
+动态规划解法
+P(i,j)=(P(i+1,j−1) and S[i] == S[j])
+*/
+class Solution {
+public:
+    string longestPalindrome(string s) {   
+      int len = s.length();
+      //长度小于等于1，直接返回
+      if(len <= 1){
+        return s;
+      }
+      //回文最小长度为1，就一个字符
+      int beg = 0, max = 1;
+      //申请动态二维数组，存储dp表
+      vector<vector<int>> dp(len, vector<int>(len));
+      for(int i = 0; i < len; ++i){
+        dp[i][i] = 1;     //对角线上是单个字符，回文长度为1
+        if(s[i] == s[i + 1] && i < len - 1){
+          dp[i][i + 1] = 1;   //回文长度为2，若有多个，则以最后一对为结果
+          beg = i;
+          max = 2;
+        }
+      }
+      //回文长度大于等于3
+      for(int leng = 3; leng <= len; ++leng){
+        for(int i = 0; i + leng - 1 < len; ++i){      //回文end小标小于原始字符串长度
+          int j = i + leng - 1;                       //回文end下标
+          if(s[i] == s[j] && s[i + 1][j - 1] == 1){   //状态转移方程式
+            dp[i][j] == 1;
+            beg = i;
+            max = leng;
+          }
+        }
+      }
+      return s.substr(beg, max);
+    }
+};
+
+
