@@ -5,7 +5,7 @@ L   C   I   R
 E T O E S I I G
 E   D   H   N
 */
-
+/*  两种解题方式，优化方式在最下方 */
 /*
 解题思路：将所有字符按规则存储到一个二维数组
 数组的维数：
@@ -69,5 +69,37 @@ public:
 		    }
 	    }
 	    return str;
+    }
+};
+
+/*
+按行排序：
+从上到下扫描，添加字符
+L   C   I   R
+E T O E S I I G
+E   D   H   N
+*/
+class Solution {
+public:
+    string convert(string s, int numRows) {
+	if(numRows == 1){
+		return s;
+	}
+	int len = s.size();
+	vector<string> str(min(numRows, len));				//定容量
+	bool goingDown = false;
+	int curRows = 0;
+	for(char c : s){
+		str[curRows] += c; 
+		if(curRows == 0 || curRows == numRows - 1){		//第一行或者最后一行需要变向，向下或者向上
+			goingDown = !goingDown;				//向上是将斜方向上的字符添加进去
+		}							//向下是将垂直方向的字符加入
+		curRows += goingDown ? 1 : -1;				//goingDown很精髓！！！
+	}
+	string ret;
+	for(string row : str){
+		ret += row;
+	}
+	return str;
     }
 };
