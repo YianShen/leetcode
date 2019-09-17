@@ -1,0 +1,33 @@
+/*
+判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。
+*/
+
+/*
+解题思路：与数字翻转那题思路相同，进行稍加修改就行
+另外：
+其他两种解题思路参考： 1.直接当字符串存，翻转  2.数字翻转后一半，与前一半比较大小(这里需要区分数字奇偶位数)
+*/
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x < 0){               //负数必不可能为回文，因为负号就一个
+            return false;
+        }
+        int sum = 0, ret = 0;
+        int y = x;
+        while(y != 0){
+            if(sum > INT_MAX / 10){     //判断是否溢出，因为是回文，所以翻转后比不会溢出，翻转后溢出必不是回文
+                return false;
+            }
+            ret = y % 10;
+            y = y / 10;
+            sum = sum * 10 + ret;
+        }
+        if(x == sum){               //翻转后与翻转前相等，则为回文
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+};
