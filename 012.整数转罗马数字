@@ -34,7 +34,14 @@ C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
   6)  < 10 存入字符串数组
 优缺点：
   时间内内存占用都还行；
+***************************************************
+优化思路(贪心思想)：
+  使用map，键值对存储整数和罗马数字
+优缺点：
+  时间和内存消耗较上一种方法差
+***************************************************
 */
+*****************************************************************************************
 class Solution {
 public:
     string intToRoman(int num) {
@@ -103,3 +110,22 @@ public:
         return str;
     }
 };
+*****************************************************************************************
+class Solution {
+public:
+    string intToRoman(int num) {
+      map<int,string> mapval{{1,"I"},{4,"IV"},{5,"V"},{9,"IX"},{10,"X"},{40,"XL"},{50,"L"}, {90,"XC"},{100,"C"},{400,"CD"},{500,"D"},{900,"CM"}, {1000,"M"};
+      map<int,string>::reverse_iterator it = mapval.rbegin();
+      string str = "";
+      while(it != mapval.rend()){
+        if(num >= mapval->first){
+          str += mapval->second;
+          num = num - mapval->first;
+        }
+        else{
+          it++;
+        }
+      }
+      return str;
+    }
+}；
