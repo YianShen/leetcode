@@ -1,0 +1,52 @@
+/*
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+输入："23"
+输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+*/
+
+/*
+实现了输入字符串长度为2时的例子
+*/ 
+vector<string> combineTwo(string str1, string str2)
+{
+	vector<string> vec;
+	int strlen1 = str1.size();
+	int strlen2 = str2.size();
+	string ss;
+	for (auto c : str1)
+	{
+		for (auto s : str2)
+		{
+			ss = c;
+			ss += s;           // 注意：一定要这样拼接，不可c + s拼接，会自动隐式转换为int！！！！！！！！！
+			vec.push_back(ss);
+		}
+	}
+	return vec;
+}
+vector<string> letterCombinations(string digits) {
+	vector<string> vec;
+	int n = digits.length();
+	int* p = new int[n];
+	string str[8] = { "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 2; j <= 9; j++)
+		{
+			if (j == (digits.at(i) - '0'))
+			{
+				p[i] = j;
+				continue;
+			}
+		}
+	}
+	int k = 0;
+	while (k < n - 1)
+	{
+		vec = combineTwo(str[p[k] - 2], str[p[k + 1] - 2]);
+		k++;
+	}
+	return vec;
+}
