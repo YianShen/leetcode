@@ -8,6 +8,7 @@
 
 /*
 实现了输入字符串长度为2时的例子
+解题思路：将后面字符附加到前面
 */ 
 vector<string> combineTwo(string str1, string str2)
 {
